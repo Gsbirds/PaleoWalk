@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-bark: #2d241b;
+  --color-moss: #5c6f4a;
+  --color-fern: #7d9166;
+  --color-sand: #e9e2d3;
+  --color-clay: #c07a4b;
+  --color-amber: #d9a441;
+
+  --font-display: ui-serif, Georgia, Cambria, serif;
+
+  --animate-fade-up: fade-up 0.4s ease-out both;
+
+  @keyframes fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(
+      1200px 600px at 50% -10%,
+      #3a3123 0%,
+      transparent 60%
+    ),
+    #221b13;
+  color: #e9e2d3;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Keep the Leaflet map behind our UI chrome */
+.leaflet-container {
+  background: #1c1710;
+  outline: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #5c6f4a transparent;
+}
