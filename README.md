@@ -55,13 +55,3 @@ OPENAI_API_KEY=sk-...
 4. The response renders as an immersive story plus creature cards.
 
 The API key never leaves the server.
-
-## Trade-offs & scope
-
-- The model reasons about regional paleontology from its training rather than querying a live fossil database (e.g. the Paleobiology Database). It's vivid and usually accurate for well-known formations, but it is not authoritative. Wiring in the PBDB API would be the top next step.
-- No auth, no persistence — not needed for the core experience.
-- Not optimized for production hardening (rate limiting, caching) given the one-day scope.
-
-## Deploy
-
-Push to GitHub. To go live later, connect the repo to Vercel and set `OPENAI_API_KEY` as an environment variable in the Vercel dashboard.
