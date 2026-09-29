@@ -2,21 +2,33 @@
 @import "leaflet/dist/leaflet.css";
 
 @theme {
-  --color-bark: #2d241b;
+  /* Core palette — warm excavation / field-dossier tones */
+  --color-bark: #241d15;
   --color-moss: #5c6f4a;
-  --color-fern: #7d9166;
-  --color-sand: #e9e2d3;
-  --color-clay: #c07a4b;
-  --color-amber: #d9a441;
+  --color-fern: #8aa06a;
+  --color-sand: #ece3d0;
+  --color-clay: #bf6a3a;
+  --color-amber: #e0a63c;
 
-  --font-display: ui-serif, Georgia, Cambria, serif;
+  /* Solid surfaces (opaque — no see-through) */
+  --color-ink: #1b1610; /* app background base */
+  --color-surface: #2c2419; /* primary card */
+  --color-surface-2: #362c1e; /* raised card */
+  --color-surface-3: #423521; /* inputs / chips */
+  --color-line: #4a3d29; /* hairline borders */
+  --color-parchment: #efe6d2; /* light "printed" card */
+  --color-parchment-ink: #2a2114; /* text on parchment */
+  --color-bone: #f3ecdd;
 
-  --animate-fade-up: fade-up 0.4s ease-out both;
+  --font-display: "Iowan Old Style", "Palatino Linotype", ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 
   @keyframes fade-up {
     0% {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(10px);
     }
     100% {
       opacity: 1;
@@ -31,24 +43,76 @@ body {
 }
 
 body {
-  background: radial-gradient(
-      1200px 600px at 50% -10%,
-      #3a3123 0%,
-      transparent 60%
+  /* Deep "rock strata": faint repeating horizontal bands over a solid base */
+  background-color: #1b1610;
+  background-image: repeating-linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 34px
     ),
-    #221b13;
-  color: #e9e2d3;
+    radial-gradient(900px 500px at 50% -8%, #362b1c 0%, transparent 65%);
+  color: var(--color-sand);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Keep the Leaflet map behind our UI chrome */
+/* A small utility: uppercase mono "field label" */
+.field-label {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.65rem;
+}
+
+/* Corner tick marks for the dossier look */
+.ticks {
+  position: relative;
+}
+.ticks::before,
+.ticks::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--color-amber);
+  opacity: 0.7;
+}
+.ticks::before {
+  top: 6px;
+  left: 6px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.ticks::after {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
 .leaflet-container {
-  background: #1c1710;
+  background: #14100b;
   outline: none;
+}
+
+/* Tone OSM's bright default tiles toward the app's warm dark palette. */
+.leaflet-tile-pane {
+  filter: brightness(0.72) saturate(0.7) sepia(0.22) hue-rotate(-8deg);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #5c6f4a transparent;
+  scrollbar-color: var(--color-moss) transparent;
+}
+
+/* Interactive elements get a pointer; disabled ones don't. */
+button:not(:disabled),
+[role="button"]:not(:disabled),
+a[href] {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
 }

@@ -7,8 +7,9 @@ Built for the Applause AI Enablement Engineer take-home challenge.
 ## Features
 
 - **🥾 Walk mode** — uses your live GPS location to reveal what walked the ground beneath your feet.
-- **🌍 Global mode** — tap anywhere on an interactive world map, or search a place by name, to explore its deep past.
+- **🌍 Global mode** — tap anywhere on an interactive world map, search a place by name, pick from one-tap **famous fossil sites** (Hell Creek, Gobi, Morrison, La Brea, Solnhofen…), or hit **🎲 Lucky Dino** to land somewhere random.
 - **LLM-powered** — a single server-side call to the OpenAI API returns structured, region-grounded paleontology (creatures, era, environment, and a short immersive story).
+- **Real fossil images** — each creature gets a large, swipeable gallery of photos and paleoart pulled live from Wikipedia, with attribution links back to the source. No API key needed for images.
 - **Mobile-first** — designed to be used one-handed on a phone on the trail.
 - **Runs with no key** — falls back to a demo report so you can see the whole app before wiring in a key.
 

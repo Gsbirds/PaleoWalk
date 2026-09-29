@@ -1,10 +1,12 @@
 import type { Creature } from "@/lib/types";
+import ImageGallery from "./ImageGallery";
 
-const dietColor: Record<string, string> = {
-  Carnivore: "bg-clay/20 text-clay",
-  Herbivore: "bg-fern/20 text-fern",
-  Omnivore: "bg-amber/20 text-amber",
-  Piscivore: "bg-clay/20 text-clay",
+// Solid chip colors (opaque) keyed by diet.
+const dietChip: Record<string, string> = {
+  Carnivore: "bg-clay text-bone",
+  Herbivore: "bg-moss text-bone",
+  Omnivore: "bg-amber text-parchment-ink",
+  Piscivore: "bg-clay text-bone",
 };
 
 export default function CreatureCard({
@@ -14,47 +16,53 @@ export default function CreatureCard({
   creature: Creature;
   index: number;
 }) {
-  const diet = dietColor[creature.diet] ?? "bg-sand/10 text-sand";
+  const diet = dietChip[creature.diet] ?? "bg-surface-3 text-sand";
 
   return (
     <article
-      className="animate-fade-up rounded-2xl border border-sand/10 bg-bark/50 p-4 shadow-lg backdrop-blur"
+      className="animate-fade-up overflow-hidden rounded-xl border border-line bg-surface shadow-[0_10px_30px_-14px_rgba(0,0,0,0.7)]"
       style={{ animationDelay: `${index * 80}ms` }}
     >
-      <div className="flex items-start gap-3">
-        <div className="text-4xl leading-none" aria-hidden>
+      {creature.images.length ? (
+        <ImageGallery
+          images={creature.images}
+          heightClass="h-64 sm:h-80"
+          rounded="rounded-none"
+        />
+      ) : (
+        <div className="flex h-40 items-center justify-center bg-surface-2 text-6xl">
           {creature.emoji}
         </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="font-display text-lg font-semibold text-sand">
-            {creature.commonName}
-          </h3>
-          <p className="truncate text-sm italic text-fern">{creature.name}</p>
-        </div>
-      </div>
+      )}
 
-      <div className="mt-3 flex flex-wrap gap-2 text-xs">
-        <span className={`rounded-full px-2 py-0.5 ${diet}`}>
-          {creature.diet}
-        </span>
-        <span className="rounded-full bg-sand/10 px-2 py-0.5 text-sand/80">
-          {creature.type}
-        </span>
-        {creature.sizeMeters ? (
-          <span className="rounded-full bg-sand/10 px-2 py-0.5 text-sand/80">
-            ~{creature.sizeMeters} m long
+      <div className="p-4">
+        <h3 className="font-display text-xl font-semibold text-bone">
+          {creature.commonName}
+        </h3>
+        <p className="text-sm italic text-fern">{creature.name}</p>
+
+        <div className="mt-3 flex flex-wrap gap-2 text-xs">
+          <span className={`rounded-md px-2 py-0.5 font-semibold ${diet}`}>
+            {creature.diet}
           </span>
-        ) : null}
-      </div>
+          <span className="rounded-md bg-surface-3 px-2 py-0.5 text-sand/85">
+            {creature.type}
+          </span>
+          {creature.sizeMeters ? (
+            <span className="rounded-md bg-surface-3 px-2 py-0.5 text-sand/85">
+              ~{creature.sizeMeters} m long
+            </span>
+          ) : null}
+        </div>
 
-      <div className="mt-3 text-sm text-sand/70">
-        <span className="text-sand/90">{creature.period}</span>
-        <span className="text-sand/40"> · {creature.yearsAgo}</span>
-      </div>
+        <p className="field-label mt-3 text-amber/80">
+          {creature.period} · {creature.yearsAgo}
+        </p>
 
-      <p className="mt-2 text-sm leading-relaxed text-sand/80">
-        {creature.funFact}
-      </p>
+        <p className="mt-2 text-sm leading-relaxed text-sand/85">
+          {creature.funFact}
+        </p>
+      </div>
     </article>
   );
 }

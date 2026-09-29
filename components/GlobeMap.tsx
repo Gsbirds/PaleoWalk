@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
+import type { LatLon } from "@/lib/geo";
 
 // Fix Leaflet's default marker icons (they break under bundlers otherwise).
 const markerIcon = L.divIcon({
@@ -11,8 +12,6 @@ const markerIcon = L.divIcon({
   iconSize: [28, 28],
   iconAnchor: [0, 0],
 });
-
-type LatLon = { lat: number; lon: number };
 
 function ClickHandler({ onPick }: { onPick: (p: LatLon) => void }) {
   useMapEvents({
@@ -35,6 +34,22 @@ function Recenter({ point }: { point: LatLon | null }) {
   return null;
 }
 
+function InvalidateOnMount() {
+  const map = useMap();
+  useEffect(() => {
+    const fix = () => map.invalidateSize();
+    // Run after the container has been laid out.
+    const t = setTimeout(fix, 0);
+    requestAnimationFrame(fix);
+    window.addEventListener("resize", fix);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", fix);
+    };
+  }, [map]);
+  return null;
+}
+
 export default function GlobeMap({
   point,
   onPick,
@@ -48,13 +63,16 @@ export default function GlobeMap({
       zoom={2}
       minZoom={2}
       worldCopyJump
+      style={{ height: "100%", width: "100%" }}
       className="h-full w-full"
       attributionControl={false}
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-        subdomains={["a", "b", "c", "d"]}
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        subdomains={["a", "b", "c"]}
+        maxZoom={19}
       />
+      <InvalidateOnMount />
       <ClickHandler onPick={onPick} />
       <Recenter point={point} />
       {point && <Marker position={[point.lat, point.lon]} icon={markerIcon} />}
